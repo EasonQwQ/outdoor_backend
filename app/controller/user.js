@@ -13,6 +13,7 @@ class UserController extends Controller {
         user,
         exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2),
       }, app.config.jwt.secret);
+      console.log('UserController -> login -> Mat60 * 72)', Math.floor(Date.now() / 1000) + (60 * 60 * 72));
       ctx.helper.success({ ctx, code: 200, res: token });
     } else {
       ctx.helper.fail({ ctx, code: 500, res: '服务器获取token失败' });
@@ -31,11 +32,19 @@ class UserController extends Controller {
 
   async loginByPassword() {
     // const { code } = ctx.request.body;
-    const { ctx } = this;
+    const { ctx, app } = this;
     const { username, password } = ctx.request.body;
     const user = await ctx.service.user.getByUsernameAndPassword(username, password);
-    this.ctx.helper.success({ ctx, code: 200, res: user });
-    console.log('UserController -> loginByPassword -> user', user);
+    if (user) {
+      // 用户存在,生成token
+      const token = app.jwt.sign({
+        user,
+        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2),
+      }, app.config.jwt.secret);
+      ctx.helper.success({ ctx, code: 1, res: token });
+    } else {
+      ctx.helper.success({ ctx, code: 0, res: null });
+    }
   }
 }
 

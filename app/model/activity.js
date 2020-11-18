@@ -47,6 +47,10 @@ module.exports = (app) => {
       field: 'is_gather',
       type: INTEGER(1),
     },
+    activityBeforeDate: {
+      field: 'activity_before_date',
+      type: DATE,
+    },
   }, {
     timestamps: true,
     paranoid: true,

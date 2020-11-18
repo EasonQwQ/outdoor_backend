@@ -26,9 +26,9 @@ module.exports = {
     };
   },
   fail: ({ ctx, code = 500, res = null }) => {
-    ctx.status = 200;
+    ctx.status = code;
     ctx.body = {
-      code,
+      // code,
       message: ctx.helper.errorCode[code],
       data: {
         error: res,

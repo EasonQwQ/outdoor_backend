@@ -11,8 +11,8 @@ class StsController extends Controller {
       proxy: '',
       durationSeconds: 1800, // 密钥有效期
       // 放行判断相关参数
-      bucket: 'comment-pic-1255632723',
-      region: 'ap-shanghai',
+      bucket: cos.Bucket,
+      region: cos.Region,
       // bucket: 'test-bucket-1253653367', // 换成你的 bucket
       // region: 'ap-guangzhou', // 换成 bucket 所在地区
       allowPrefix: '*', // 这里改成允许的路径前缀，可以根据自己网站的用户登录态判断允许上传的具体路径，例子： a.jpg 或者 a/* 或者 * (使用通配符*存在重大安全风险, 请谨慎评估使用)
@@ -52,9 +52,7 @@ class StsController extends Controller {
         durationSeconds: config.durationSeconds,
         policy,
       }, (err, tempKeys) => {
-        console.log('StsController -> index -> err', err);
         const result = JSON.stringify(err || tempKeys) || '';
-        console.log('StsController -> index -> result', result);
         resolve(result);
       });
     });
